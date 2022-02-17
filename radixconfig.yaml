@@ -1,0 +1,26 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: plutotestserver
+spec:
+  environments:
+    - name: dev
+      build:
+        from: main
+  components:
+    - name: backend
+      dockerfileName: Dockerfile
+      ports:
+        - name: http
+          port: 5000
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "50m"
+        limits:
+          memory: "1024Mi"
+          cpu: "1000m"
+      publicPort: http
+  dnsAppAlias:
+    environment: dev
+    component: backend
