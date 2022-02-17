@@ -63,7 +63,8 @@ RUN chown -R $NB_USER $JULIA_DEFAULT_ENV /opt/julia-1.6
 USER $NB_USER
 
 RUN /opt/julia-1.6/bin/julia --threads 80 /opt/julia-1.6/install-packages.jl
-RUN /opt/julia-1.6/bin/julia -e "using WebIO; WebIO.install_jupyter_serverextension()"
+# RUN /opt/julia-1.6/bin/julia -e "using WebIO; WebIO.install_jupyter_serverextension()"
+RUN python3 -m pip install --upgrade webio_jupyter_extension
 
 RUN /opt/julia-1.6/bin/julia -e "using Pkg; Pkg.build(\"IJulia\")"
 RUN /opt/julia-1.6/bin/julia -e 'using PackageCompiler; create_sysimage([:Archimedes, :Plots, :Luxor, :NLsolve, :Unitful, :CoolProp, :BoundaryValueDiffEq, :PGFPlotsX, :LaTeXStrings, :TikzPictures, :IJulia, :Pluto]; precompile_statements_file="/opt/julia-1.6/sysimage-precompile.jl", replace_default=true)'
