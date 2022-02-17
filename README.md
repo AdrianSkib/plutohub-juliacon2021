@@ -90,4 +90,4 @@ systemctl start jupyterhub
 
 ## Adjust the Docker file
 
-Included in this repository is a sample [`Dockerfile`](Dockerfile) that runs the single-user server. This currently installs Julia with some packages, a custom sysimage and Pluto.
+Included in this repository is  a sample [`Dockerfile`](Dockerfile) that runs the single-user server. This currently installs Julia with some packages, a custom sysimage and Pluto.
