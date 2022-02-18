@@ -154,6 +154,7 @@ RUN mamba install --quiet --yes \
 EXPOSE 8585
 
 # Configure container startup
+RUN chmod +x tini
 ENTRYPOINT ["tini", "-g", "--"]
 CMD ["start-notebook.sh"]
 
