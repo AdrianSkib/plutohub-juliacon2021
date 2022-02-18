@@ -53,8 +53,6 @@ RUN mkdir -p /home/radix-non-root-user
 # Give non-root user access to folder where everything will be run from
 RUN chown -R radix-non-root-user:radix-non-root-group /home/radix-non-root-user
 
-# Change to user 1000
-USER 1000
 
 # We use tini as an entrypoint to not loose track of SIGTERM signals as sent
 # before SIGKILL when "docker stop" or "kubectl delete pod" is run. By doing
@@ -66,6 +64,9 @@ RUN apt-get update \
  && apt-get install --yes \
         git \
  && rm -rf /var/lib/apt/lists/*
+
+# Change to user 1000
+USER 1000
 
 # Copy the built wheels from the build-stage. Also copy the image
 # requirements.txt built from the binderhub package requirements.txt and the
