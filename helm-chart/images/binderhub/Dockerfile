@@ -85,6 +85,7 @@ RUN pip install --no-cache-dir \
 ARG PIP_TOOLS=
 RUN test -z "$PIP_TOOLS" || pip install --no-cache pip-tools==$PIP_TOOLS
 
+ENV PATH="/home/radix-non-root-user/.local/bin:${PATH}"
 ENTRYPOINT ["/tini", "--", "python3", "-m", "binderhub"]
 CMD ["--config", "/etc/binderhub/config/binderhub_config.py"]
 ENV PYTHONUNBUFFERED=1
