@@ -45,6 +45,12 @@ RUN apt-get update --yes && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
+RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.5/julia-1.5.3-linux-x86_64.tar.gz && \
+    tar -xvzf julia-1.5.3-linux-x86_64.tar.gz && \
+    mv julia-1.5.3 /opt/ && \
+    ln -s /opt/julia-1.5.3/bin/julia /usr/local/bin/julia && \
+    rm julia-1.5.3-linux-x86_64.tar.gz
+
 # Configure environment
 ENV CONDA_DIR=/opt/conda \
     SHELL=/bin/bash \
@@ -150,12 +156,6 @@ RUN mamba install --quiet --yes \
     rm -rf "/home/${NB_USER}/.cache/yarn" && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
-
-RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.5/julia-1.5.3-linux-x86_64.tar.gz && \
-    tar -xvzf julia-1.5.3-linux-x86_64.tar.gz && \
-    mv julia-1.5.3 /opt/ && \
-    ln -s /opt/julia-1.5.3/bin/julia /usr/local/bin/julia && \
-    rm julia-1.5.3-linux-x86_64.tar.gz
 
 COPY --chown=${NB_UID} ./plutoserver ./plutoserver
 COPY --chown=${NB_UID} ./environment.yml ./environment.yml
