@@ -154,14 +154,16 @@ RUN mamba install --quiet --yes \
 EXPOSE 8585
 
 # Copy local files as late as possible to avoid cache busting
-COPY --chown=${NB_UID} start.sh start-notebook.sh start-singleuser.sh /usr/local/bin/
+COPY --chown=${NB_UID} start.sh /usr/local/bin/
+COPY --chown=${NB_UID} start-notebook.sh /usr/local/bin/
+COPY --chown=${NB_UID} start-singleuser.sh /usr/local/bin/
 
 # Configure container startup
 # RUN chmod +x start-notebook.sh
 # RUN chmod +x start-singleuser.sh
 # RUN chmod +x start.sh
-ENTRYPOINT ["tini", "-g", "--"]
-CMD ["start-notebook.sh"]
+# ENTRYPOINT ["tini", "-g", "--"]
+ENTRYPOINT ["start-notebook.sh"]
 
 # Currently need to have both jupyter_notebook_config and jupyter_server_config to support classic and lab
 COPY jupyter_server_config.py /etc/jupyter/
