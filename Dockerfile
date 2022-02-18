@@ -158,25 +158,26 @@ COPY --chown=${NB_UID} start.sh /usr/local/bin/
 COPY --chown=${NB_UID} start-notebook.sh /usr/local/bin/
 COPY --chown=${NB_UID} start-singleuser.sh /usr/local/bin/
 
+
+# Currently need to have both jupyter_notebook_config and jupyter_server_config to support classic and lab
+COPY jupyter_server_config.py /etc/jupyter/
+
+# # Fix permissions on /etc/jupyter as root
+# USER root
+
+# # Legacy for Jupyter Notebook Server, see: [#1205](https://github.com/jupyter/docker-stacks/issues/1205)
+# RUN sed -re "s/c.ServerApp/c.NotebookApp/g" \
+#     /etc/jupyter/jupyter_server_config.py > /etc/jupyter/jupyter_notebook_config.py && \
+#     fix-permissions /etc/jupyter/
+
+# Switch back to jovyan to avoid accidental container runs as root
+USER ${NB_UID}
+
+WORKDIR "${HOME}"
+
 # Configure container startup
 # RUN chmod +x start-notebook.sh
 # RUN chmod +x start-singleuser.sh
 # RUN chmod +x start.sh
 # ENTRYPOINT ["tini", "-g", "--"]
 ENTRYPOINT ["start-notebook.sh"]
-
-# Currently need to have both jupyter_notebook_config and jupyter_server_config to support classic and lab
-COPY jupyter_server_config.py /etc/jupyter/
-
-# Fix permissions on /etc/jupyter as root
-USER root
-
-# Legacy for Jupyter Notebook Server, see: [#1205](https://github.com/jupyter/docker-stacks/issues/1205)
-RUN sed -re "s/c.ServerApp/c.NotebookApp/g" \
-    /etc/jupyter/jupyter_server_config.py > /etc/jupyter/jupyter_notebook_config.py && \
-    fix-permissions /etc/jupyter/
-
-# Switch back to jovyan to avoid accidental container runs as root
-USER ${NB_UID}
-
-WORKDIR "${HOME}"
