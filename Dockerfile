@@ -179,5 +179,6 @@ WORKDIR "${HOME}"
 # RUN chmod +x start-notebook.sh
 # RUN chmod +x start-singleuser.sh
 # RUN chmod +x start.sh
-# ENTRYPOINT ["tini", "-g", "--"]
-ENTRYPOINT ["start-notebook.sh"]
+RUN ["chmod", "+x", "/usr/local/bin/start-notebook.sh"]
+ENTRYPOINT ["tini", "-g", "--"]
+CMD ["start-notebook.sh"]
