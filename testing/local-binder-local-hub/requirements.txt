@@ -1,4 +1,0 @@
-dockerspawner
-jupyter-repo2docker
-jupyterhub
-nullauthenticator
