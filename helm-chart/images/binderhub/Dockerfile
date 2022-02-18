@@ -25,7 +25,7 @@ WORKDIR /tmp/binderhub
 # Build the binderhub python library into a wheel and save it to the ./dist
 # folder. There are no pycurl or ruamel.yaml.clib wheels so we build our own in
 # the build stage.
-RUN python -m pip install build && python -m build --wheel .
+RUN python -mpip install build && python -mbuild --wheel .
 RUN pip wheel --wheel-dir ./dist \
        pycurl \
        ruamel.yaml.clib
@@ -57,7 +57,7 @@ RUN apt-get update \
 # requirements.txt built from the binderhub package requirements.txt and the
 # requirements.in file using the ./dependency script.
 COPY --from=build-stage /tmp/binderhub/dist/*.whl pre-built-wheels/
-COPY requirements.txt .
+COPY helm-chart/images/binderhub/requirements.txt .
 
 # Install pre-built wheels and the generated requirements.txt for the image.
 RUN pip install --no-cache-dir \

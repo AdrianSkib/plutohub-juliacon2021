@@ -9,7 +9,7 @@ spec:
         from: master
   components:
     - name: backend
-      dockerfileName: Dockerfile
+      dockerfileName: .\helm-chart\images\binderhub\Dockerfile
       ports:
         - name: http
           port: 8585
