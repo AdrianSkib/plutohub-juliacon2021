@@ -151,7 +151,7 @@ RUN mamba install --quiet --yes \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-EXPOSE 8585
+EXPOSE 8888
 
 # Copy local files as late as possible to avoid cache busting
 COPY --chown=${NB_UID} start.sh /usr/local/bin/

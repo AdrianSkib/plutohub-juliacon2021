@@ -12,7 +12,7 @@ spec:
       dockerfileName: Dockerfile
       ports:
         - name: http
-          port: 8585
+          port: 8888
       resources:
         requests:
           memory: "64Mi"
