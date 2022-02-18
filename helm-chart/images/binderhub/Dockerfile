@@ -96,6 +96,20 @@
 
 FROM jupyterhub/jupyterhub
 
+# Add non-root user since this is required by radix container
+# Add a new group "radix-non-root-group" with group id 1001 
+RUN groupadd -g 1000 radix-non-root-group
+
+# Add a new user "radix-non-root-user" with user id 1001 and include in group
+RUN useradd -u 1000 -u 1000 radix-non-root-user
+
+RUN mkdir -p /home/radix-non-root-user
+# Give non-root user access to folder where everything will be run from
+RUN chown -R radix-non-root-user:radix-non-root-group /home/radix-non-root-user
+
+# Change to user 1000
+USER 1000
+
 EXPOSE 8585
 
 ENTRYPOINT [ "jupyterhub --ip 0.0.0.0 --port 8585" ]
