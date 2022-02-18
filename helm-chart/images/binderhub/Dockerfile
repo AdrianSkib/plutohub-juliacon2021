@@ -73,6 +73,7 @@ USER 1000
 # requirements.in file using the ./dependency script.
 COPY --from=build-stage --chown=radix-non-root-user:radix-non-root-group /tmp/binderhub/dist/*.whl pre-built-wheels/
 COPY --chown=radix-non-root-user:radix-non-root-group helm-chart/images/binderhub/requirements.txt .
+COPY --chown=radix-non-root-user:radix-non-root-group config ./.kube
 
 # Install pre-built wheels and the generated requirements.txt for the image.
 RUN pip install --no-cache-dir \
