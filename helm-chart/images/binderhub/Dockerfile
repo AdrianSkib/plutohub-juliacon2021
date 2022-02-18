@@ -42,10 +42,24 @@ RUN ARCH=$(uname -m); \
 FROM python:3.8-slim-$DIST
 WORKDIR /
 
+# Add non-root user since this is required by radix container
+# Add a new group "radix-non-root-group" with group id 1001 
+RUN groupadd -g 1000 radix-non-root-group
+
+# Add a new user "radix-non-root-user" with user id 1001 and include in group
+RUN useradd -u 1000 -u 1000 radix-non-root-user
+
+RUN mkdir -p /home/radix-non-root-user
+# Give non-root user access to folder where everything will be run from
+RUN chown -R radix-non-root-user:radix-non-root-group /home/radix-non-root-user
+
+# Change to user 1000
+USER 1000
+
 # We use tini as an entrypoint to not loose track of SIGTERM signals as sent
 # before SIGKILL when "docker stop" or "kubectl delete pod" is run. By doing
 # that the pod can terminate very quickly.
-COPY --from=build-stage /tini /tini
+COPY --from=build-stage --chown=radix-non-root-user:radix-non-root-group /tini /tini
  
 # The slim version doesn't include git as required by binderhub
 RUN apt-get update \
@@ -56,8 +70,8 @@ RUN apt-get update \
 # Copy the built wheels from the build-stage. Also copy the image
 # requirements.txt built from the binderhub package requirements.txt and the
 # requirements.in file using the ./dependency script.
-COPY --from=build-stage /tmp/binderhub/dist/*.whl pre-built-wheels/
-COPY helm-chart/images/binderhub/requirements.txt .
+COPY --from=build-stage --chown=radix-non-root-user:radix-non-root-group /tmp/binderhub/dist/*.whl pre-built-wheels/
+COPY --chown=radix-non-root-user:radix-non-root-group helm-chart/images/binderhub/requirements.txt .
 
 # Install pre-built wheels and the generated requirements.txt for the image.
 RUN pip install --no-cache-dir \
