@@ -157,9 +157,9 @@ EXPOSE 8585
 COPY --chown=${NB_UID} start.sh start-notebook.sh start-singleuser.sh /usr/local/bin/
 
 # Configure container startup
-RUN chmod +x start-notebook.sh
-RUN chmod +x start-singleuser.sh
-RUN chmod +x start.sh
+# RUN chmod +x start-notebook.sh
+# RUN chmod +x start-singleuser.sh
+# RUN chmod +x start.sh
 ENTRYPOINT ["tini", "-g", "--"]
 CMD ["start-notebook.sh"]
 
