@@ -160,8 +160,6 @@ RUN mamba install --quiet --yes \
 COPY --chown=${NB_UID} ./plutoserver ./plutoserver
 COPY --chown=${NB_UID} ./environment.yml ./environment.yml
 COPY --chown=${NB_UID} ./setup.py ./setup.py
-COPY --chown=${NB_UID} ./runpluto.sh ./runpluto.sh
-COPY --chown=${NB_UID} ./runpluto.sh /usr/local/bin/
 
 RUN julia -e "import Pkg; Pkg.add([\"PlutoUI\", \"Pluto\", \"DataFrames\", \"CSV\", \"Plots\"]); Pkg.precompile()"
 
@@ -178,6 +176,8 @@ COPY --chown=${NB_UID} start.sh /usr/local/bin/
 COPY --chown=${NB_UID} start-notebook.sh /usr/local/bin/
 COPY --chown=${NB_UID} start-singleuser.sh /usr/local/bin/
 
+COPY --chown=${NB_UID}:users ./runpluto.sh ./runpluto.sh
+COPY --chown=${NB_UID} ./runpluto.sh /usr/local/bin/
 
 # Currently need to have both jupyter_notebook_config and jupyter_server_config to support classic and lab
 COPY jupyter_server_config.py /etc/jupyter/
@@ -202,5 +202,6 @@ WORKDIR "${HOME}"
 RUN ["chmod", "+x", "/usr/local/bin/start-notebook.sh"]
 RUN ["chmod", "+x", "/usr/local/bin/start-singleuser.sh"]
 RUN ["chmod", "+x", "/usr/local/bin/start.sh"]
+RUN ["chmod", "+x", "/usr/local/bin/runpluto.sh"]
 ENTRYPOINT ["tini", "-g", "--"]
 CMD ["start-notebook.sh"]
