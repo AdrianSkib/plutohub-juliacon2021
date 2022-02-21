@@ -161,6 +161,7 @@ COPY --chown=${NB_UID} ./plutoserver ./plutoserver
 COPY --chown=${NB_UID} ./environment.yml ./environment.yml
 COPY --chown=${NB_UID} ./setup.py ./setup.py
 COPY --chown=${NB_UID} ./runpluto.sh ./runpluto.sh
+COPY --chown=${NB_UID} ./runpluto.sh /usr/local/bin/
 
 RUN julia -e "import Pkg; Pkg.add([\"PlutoUI\", \"Pluto\", \"DataFrames\", \"CSV\", \"Plots\"]); Pkg.precompile()"
 
