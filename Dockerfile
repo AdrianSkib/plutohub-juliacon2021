@@ -33,7 +33,7 @@ RUN apt-get update --yes && \
     pandoc \
     # - run-one - a wrapper script that runs no more
     #   than one unique  instance  of  some  command with a unique set of arguments,
-    #   we use `run-one-constantly` to support `RESTARTABLE` option
+    #   we use `run-one-constantly` to support `RESTARTABLE` option 
     run-one \
     sudo \
     # - tini is installed as a helpful container entrypoint that reaps zombie
